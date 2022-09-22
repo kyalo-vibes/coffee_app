@@ -47,6 +47,15 @@ def get_drinks():
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drink-details', methods=['GET'])
+@requires_auth('get:drinks-detail')
+def get_drink_details(payload):
+    drinks_list = Drink.query.all()
+    drinks = [drink.long() for drink in drinks_list]
+    return jsonify({
+        'success': True,
+        'drinks': drinks
+    }), 200
 
 '''
 @TODO implement endpoint
