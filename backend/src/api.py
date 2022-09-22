@@ -97,6 +97,27 @@ def create_drink(payload):
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drinks/<int:id>', methods=['PATCH'])
+@requires_auth('patch:drinks')
+def update_drink(payload, id):
+    drink = Drink.query.filter(Drink.id == id).one_or_none()
+    if drink is None:
+        abort(404)
+    try:
+        body = request.get_json()
+        title = body.get('title', None)
+        recipe = body.get('recipe', None)
+        if title is not None:
+            drink.title = title
+        if recipe is not None:
+            drink.recipe = json.dumps(recipe)
+        drink.update()
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long()]
+        }), 200
+    except:
+        abort(422)
 
 '''
 @TODO implement endpoint
