@@ -51,6 +51,8 @@ def get_drinks():
 @requires_auth('get:drinks-detail')
 def get_drink_details(payload):
     drinks_list = Drink.query.all()
+    if len(drinks) == 0:
+        abort(404)
     drinks = [drink.long() for drink in drinks_list]
     return jsonify({
         'success': True,
@@ -130,6 +132,20 @@ def update_drink(payload, id):
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drinks/<int:id>', methods=['DELETE'])
+@requires_auth('delete:drinks')
+def delete_drink(payload, id):
+    drink = Drink.query.filter(Drink.id == id).one_or_none()
+    if drink is None:
+        abort(404)
+    try:
+        drink.delete()
+        return jsonify({
+            'success': True,
+            'delete': id
+        }), 200
+    except:
+        abort(422)
 
 # Error Handling
 '''
