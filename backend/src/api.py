@@ -30,7 +30,8 @@ db_drop_and_create_all()
 '''
 
 @app.route('/drinks', methods=['GET'])
-def get_drinks():
+@requires_auth('get:drinks')
+def get_drinks(payload):
     drinks_list = Drink.query.all()
     drinks = [drink.short() for drink in drinks_list]
     return jsonify({
@@ -48,10 +49,10 @@ def get_drinks():
 '''
 
 @app.route('/drink-details', methods=['GET'])
-@requires_auth('get:drinks-detail')
+@requires_auth('get:drink-details')
 def get_drink_details(payload):
     drinks_list = Drink.query.all()
-    if len(drinks) == 0:
+    if drinks_list is None:
         abort(404)
     drinks = [drink.long() for drink in drinks_list]
     return jsonify({
@@ -102,6 +103,7 @@ def create_drink(payload):
 @app.route('/drinks/<int:id>', methods=['PATCH'])
 @requires_auth('patch:drinks')
 def update_drink(payload, id):
+    print(request.get_json())
     drink = Drink.query.filter(Drink.id == id).one_or_none()
     if drink is None:
         abort(404)
