@@ -100,47 +100,22 @@ The `--reload` flag will detect file changes and restart the server automaticall
    ,"success":true}
 ```
 
-### `DELETE '/trivia/questions/<int:question_id>'`
+### `DELETE '/drinks/<int:id>'`
 
-- Deletes the question that corresponds to the given question ID. 
-- Request Arguments: question_id
-- Returns: An object with success message and list of the remaining questions after deletion.
-- Try: `curl http://127.0.0.1:5000/trivia/questions/2 -X DELETE`
+- Deletes the drink that corresponds to the given ID. 
+- Request Arguments: id
+- Returns: An object with success message after deletion.
+- Try: `curl -H "Authorization: Bearer <token>"  http://127.0.0.1:5000/drinks/1 -DELETE`
 
 
 ```json
 {
-"deleted": 2,
-  "questions": [
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    },
-    {
-      "answer": "Maya Angelou",
-      "category": 4,
-      "difficulty": 2,
-      "id": 5,
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },
-    {
-      "answer": "Edward Scissorhands",
-      "category": 5,
-      "difficulty": 3,
-      "id": 6,
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    },
-    ],
-  "success": true,
-  "total_questions": 18
+   "delete":1,
+   "success":true
 }
-
 ```
 
-### `POST '/trivia/questions'`
+### `PATCH '/drinks/<int:id>'`
 
 - Posts a new question into the database with question, answer, category and difficulty fields.
 - Request Arguments: None
