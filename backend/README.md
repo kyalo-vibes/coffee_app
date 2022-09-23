@@ -48,40 +48,224 @@ flask run --reload
 
 The `--reload` flag will detect file changes and restart the server automatically.
 
-## Tasks
+# API Documentation
 
-### Setup Auth0
+## Endpoints
 
-1. Create a new Auth0 Account
-2. Select a unique tenant domain
-3. Create a new, single page web application
-4. Create a new API
-   - in API Settings:
-     - Enable RBAC
-     - Enable Add Permissions in the Access Token
-5. Create new API permissions:
-   - `get:drinks`
-   - `get:drinks-detail`
-   - `post:drinks`
-   - `patch:drinks`
-   - `delete:drinks`
-6. Create new roles for:
-   - Barista
-     - can `get:drinks-detail`
-     - can `get:drinks`
-   - Manager
-     - can perform all actions
-7. Test your endpoints with [Postman](https://getpostman.com).
-   - Register 2 users - assign the Barista role to one and Manager role to the other.
-   - Sign into each account and make note of the JWT.
-   - Import the postman collection `./starter_code/backend/udacity-fsnd-udaspicelatte.postman_collection.json`
-   - Right-clicking the collection folder for barista and manager, navigate to the authorization tab, and including the JWT in the token field (you should have noted these JWTs).
-   - Run the collection and correct any errors.
-   - Export the collection overwriting the one we've included so that we have your proper JWTs during review!
+|Method   | API Endpoints                                              | Purpose                                          |                             
+|--------------| -------------------------------------------------------|:-------------------------------------------------------:|
+|    GET       |```/drinks```                                   |```Fetches all the drinks from the server```                 |      
+|    GET      |```/drink-details```                                    |```Fetches the recipe of the selected drink```                             |
+|    DELETE    |```/drinks/<id>```           |```Deletes a particular drink```              |
+|    POST      |```/drinks```                                    |```Creates a new drink```           |
+|    PATCH      |```/drinks/<int:id>```                             |```Updates the title, recipe or parts of a drink```| 
 
-### Implement The Server
 
-There are `@TODO` comments throughout the `./backend/src`. We recommend tackling the files in order and from top to bottom:
+### `GET '/trivia/categories'`
 
-1. `./src/auth/auth.py`
-2. `./src/api.py`
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: None
+- Returns: An object with a single key, `categories`, that contains an object of `id: category_string` key: value pairs.
+- Try: `curl http://127.0.0.1:5000/trivia/categories`
+
+```json
+{
+{
+  "1": "Science",
+  "2": "Art",
+  "3": "Geography",
+  "4": "History",
+  "5": "Entertainment",
+  "6": "Sports"
+}
+ "success": true,
+  "total_categories": 6
+}
+
+```
+
+### `GET '/trivia/questions'`
+
+- Fetches a dictionary of questions in which the keys are the ids and the value is the corresponding string of the question
+- Request Arguments: None
+- Returns: An object with a single key, `questions`, that contains an object of `id: question_string` key: value pairs limited to only 10 results per page.
+- Try: `curl http://127.0.0.1:5000/trivia/questions`
+
+```json
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "total_questions": 19
+}
+```
+
+### `DELETE '/trivia/questions/<int:question_id>'`
+
+- Deletes the question that corresponds to the given question ID. 
+- Request Arguments: question_id
+- Returns: An object with success message and list of the remaining questions after deletion.
+- Try: `curl http://127.0.0.1:5000/trivia/questions/2 -X DELETE`
+
+
+```json
+{
+"deleted": 2,
+  "questions": [
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    ],
+  "success": true,
+  "total_questions": 18
+}
+
+```
+
+### `POST '/trivia/questions'`
+
+- Posts a new question into the database with question, answer, category and difficulty fields.
+- Request Arguments: None
+- Returns: An object with a success message and the list of new questions after insertion.
+- Try: `curl http://127.0.0.1:5000/trivia/questions -X POST -H "Content-Type: application/json" -d '{"question": "Who is Chelsea's most prolific striker?", "answer": "Didier Drogba", "category": 6, "difficulty": 2}'`
+
+
+```json
+{
+  "1": "Science",
+  "2": "Art",
+  "3": "Geography",
+  "4": "History",
+  "5": "Entertainment",
+  "6": "Sports"
+}
+```
+
+### `POST '/trivia/questions/search'`
+
+- Searches for questions that match the search word provided.
+- Request Arguments: search word
+- Returns: A dictionary of questions that matched with the search term.
+- Try: `curl http://127.0.0.1:5000/trivia/questions/search?search=Taj -X POST`
+
+```json
+{
+  "questions": [
+    {
+      "answer": "Agra",
+      "category": 3,
+      "difficulty": 2,
+      "id": 15,
+      "question": "The Taj Mahal is located in which Indian city?"
+    }
+  ],
+  "success": true,
+  "total_questions": 1
+}
+```
+
+### `GET '/trivia/categories/<category_id>/questions'`
+
+- Fetches a dictionary of questions belonging to the category specified.
+- Request Arguments: category_id
+- Returns: A dictionary of questions under the given category_id.
+- Try: `curl http://127.0.0.1:5000/trivia/categories/1/questions`
+
+```json
+{
+  "current_category": 1,
+  "questions": [
+    {
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
+    },
+    {
+      "answer": "Alexander Fleming",
+      "category": 1,
+      "difficulty": 3,
+      "id": 21,
+      "question": "Who discovered penicillin?"
+    },
+    {
+      "answer": "Blood",
+      "category": 1,
+      "difficulty": 4,
+      "id": 22,
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    }
+  ],
+  "success": true,
+  "total_questions": 3
+}
+```
+
+### `POST '/trivia/play'`
+
+- Starts the quiz by fetching randoming questions for the user to post answers.
+- Request Arguments: search word
+- Returns: A dictionary of that has not already been used.
+- Try: `curl http://127.0.0.1:5000/trivia/play -X POST -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"type": "sports", "id": "6"}}'`
+
+```json
+{
+  "question": {
+    "answer": "Uruguay",
+    "category": 6,
+    "difficulty": 4,
+    "id": 11,
+    "question": "Which country won the first ever soccer World Cup in 1930?"
+  },
+  "success": true
+}
+```
+
