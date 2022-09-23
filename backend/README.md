@@ -56,77 +56,48 @@ The `--reload` flag will detect file changes and restart the server automaticall
 |--------------| -------------------------------------------------------|:-------------------------------------------------------:|
 |    GET       |```/drinks```                                   |```Fetches all the drinks from the server```                 |      
 |    GET      |```/drink-details```                                    |```Fetches the recipe of the selected drink```                             |
-|    DELETE    |```/drinks/<id>```           |```Deletes a particular drink```              |
+|    DELETE    |```/drinks/<int:id>```           |```Deletes a particular drink```              |
 |    POST      |```/drinks```                                    |```Creates a new drink```           |
 |    PATCH      |```/drinks/<int:id>```                             |```Updates the title, recipe or parts of a drink```| 
 
 
-### `GET '/trivia/categories'`
+### `GET '/drinks'`
 
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Fetches a JSON of all the drinks in the database and displays them all.
 - Request Arguments: None
-- Returns: An object with a single key, `categories`, that contains an object of `id: category_string` key: value pairs.
-- Try: `curl http://127.0.0.1:5000/trivia/categories`
+- Returns: An object with a three keys, `tile`, `recipe` and `parts`.
+- Try: `curl -H "Authorization: Bearer <token>"  http://127.0.0.1:5000/drinks`
 
 ```json
-{
-{
-  "1": "Science",
-  "2": "Art",
-  "3": "Geography",
-  "4": "History",
-  "5": "Entertainment",
-  "6": "Sports"
-}
- "success": true,
-  "total_categories": 6
-}
+{"drinks":[
+   {"id":1,
+   "recipe":[
+      {"color":"blue",
+      "parts":1}
+            ],
+"title":"water"}
+         ],
+   "success":true}
+
 
 ```
 
-### `GET '/trivia/questions'`
+### `GET '/drink-details'`
 
-- Fetches a dictionary of questions in which the keys are the ids and the value is the corresponding string of the question
+- Fetches a JSON of all the drinks in the database and displays them all and allows for editing.
 - Request Arguments: None
-- Returns: An object with a single key, `questions`, that contains an object of `id: question_string` key: value pairs limited to only 10 results per page.
-- Try: `curl http://127.0.0.1:5000/trivia/questions`
+- Returns: An object with a three keys, `tile`, `recipe` and `parts`.
+- Try: `curl -H "Authorization: Bearer <token>"  http://127.0.0.1:5000/drinks`
 
 ```json
-{
-  "categories": {
-    "1": "Science",
-    "2": "Art",
-    "3": "Geography",
-    "4": "History",
-    "5": "Entertainment",
-    "6": "Sports"
-  },
-  "questions": [
-    {
-      "answer": "Apollo 13",
-      "category": 5,
-      "difficulty": 4,
-      "id": 2,
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    },
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    },
-    {
-      "answer": "The Palace of Versailles",
-      "category": 3,
-      "difficulty": 3,
-      "id": 14,
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    }
-  ],
-  "success": true,
-  "total_questions": 19
-}
+{"drinks":[
+   {"id":1,
+   "recipe":[
+      {"color":"blue",
+      "name":"water",
+      "parts":1}],
+   "title":"water"}]
+   ,"success":true}
 ```
 
 ### `DELETE '/trivia/questions/<int:question_id>'`
