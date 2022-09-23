@@ -69,15 +69,17 @@ The `--reload` flag will detect file changes and restart the server automaticall
 - Try: `curl -H "Authorization: Bearer <token>"  http://127.0.0.1:5000/drinks`
 
 ```json
-{"drinks":[
-   {"id":1,
-   "recipe":[
-      {"color":"blue",
-      "parts":1}
-            ],
-"title":"water"}
+{
+   "drinks":[{
+      "id":1,
+      "recipe":[{
+         "color":"blue",
+         "parts":1
+               }],
+      "title":"water"}
          ],
-   "success":true}
+   "success":true
+}
 
 
 ```
@@ -90,14 +92,17 @@ The `--reload` flag will detect file changes and restart the server automaticall
 - Try: `curl -H "Authorization: Bearer <token>"  http://127.0.0.1:5000/drinks`
 
 ```json
-{"drinks":[
-   {"id":1,
-   "recipe":[
-      {"color":"blue",
-      "name":"water",
-      "parts":1}],
-   "title":"water"}]
-   ,"success":true}
+{
+   "drinks":[{
+      "id":1,
+      "recipe":[{
+         "color":"blue",
+         "name":"water",
+         "parts":1
+               }],
+      "title":"water"}]
+   ,"success":true
+}
 ```
 
 ### `DELETE '/drinks/<int:id>'`
