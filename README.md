@@ -11,25 +11,18 @@ You have been called on to demonstrate your newly learned skills to create a ful
 3. Allow the shop baristas to see the recipe information.
 4. Allow the shop managers to create new drinks and edit existing drinks.
 
-## Tasks
-
-There are `@TODO` comments throughout the project. We recommend tackling the sections in order. Start by reading the READMEs in:
-
-1. [`./backend/`](./backend/README.md)
-2. [`./frontend/`](./frontend/README.md)
-
 ## About the Stack
 
-We started the full stack application for you. It is designed with some key functional areas:
+The application is divided into two directories: frontend and backend.
 
 ### Backend
 
-The `./backend` directory contains a partially completed Flask server with a pre-written SQLAlchemy module to simplify your data needs. You will need to complete the required endpoints, configure, and integrate Auth0 for authentication.
+The `./backend` directory contains the completed Flask server with a SQLAlchemy module to simplify our data needs. This directory contains the required endpoints, configurations, and integration with Auth0 for authentication.
 
 [View the README.md within ./backend for more details.](./backend/README.md)
 
 ### Frontend
 
-The `./frontend` directory contains a complete Ionic frontend to consume the data from the Flask server. You will only need to update the environment variables found within (./frontend/src/environment/environment.ts) to reflect the Auth0 configuration details set up for the backend app.
+The `./frontend` directory contains a complete Ionic frontend to consume the data from the Flask server. I only updated the environment variables found within (./frontend/src/environment/environment.ts) to reflect the Auth0 configuration details set up for the backend app.
 
 [View the README.md within ./frontend for more details.](./frontend/README.md)
